@@ -1,0 +1,23 @@
+<html>
+<head>
+<script src="./talkshow/jquery-1.9.1.js"></script>
+	
+<script language="javascript">
+  var token = '';
+  var requestStr = "./bingtrans/token.php";
+  function getToken() {
+  $.ajax({
+    url: requestStr ,
+    type: "GET",
+    cache: true,
+    dataType: 'jsonp',
+    success: function(data) {
+	  alert (data);
+	}
+  }
+</script>
+</head>
+<body>
+hi
+</body>
+</html>

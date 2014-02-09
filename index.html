@@ -1,0 +1,652 @@
+﻿<!DOCTYPE html>
+<html class="js consumer chrome" lang="en" id="win">
+  
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <!--meta content="initial-scale=1, minimum-scale=1, width=device-width" name="viewport"-->
+	<meta name="viewport" content="width = 960" />
+    <title>
+      TalkShow
+    </title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&subset=latin" rel="stylesheet">
+    <link href="https://www.google.com/intl/en/chrome/assets/common/css/chrome.min.css" rel="stylesheet">
+    <link href="./talkshow/talkshow.css" rel="stylesheet">
+	<link rel="stylesheet" href="./talkshow/jquery-ui.css" />
+
+    <script src="./talkshow/jquery-1.9.1.js"></script>
+    <script src="./talkshow/jquery-ui.js"></script>	
+    <script src="./talkshow/display.js">
+    </script>
+    <script src="./talkshow/slideshow.js">
+    </script>
+	
+  </head>
+  <script>
+    // This code has to live in the html file because it's utf8.  Can't do that in a .js file.
+    var langs = [
+      ['Afrikaans', ['af-ZA']],
+      ['Bahasa Indonesia', ['id-ID']],
+      ['Bahasa Melayu', ['ms-MY']],
+      ['Català', ['ca-ES']],
+      ['Čeština', ['cs-CZ']],
+      ['Deutsch', ['de-DE']],
+      ['English', ['en-AU', 'Australia'],
+       ['en-CA', 'Canada'],
+       ['en-IN', 'India'],
+       ['en-NZ', 'New Zealand'],
+       ['en-ZA', 'South Africa'],
+       ['en-GB', 'United Kingdom'],
+       ['en-US', 'United States']
+      ],
+      ['Español', ['es-AR', 'Argentina'],
+       ['es-BO', 'Bolivia'],
+       ['es-CL', 'Chile'],
+       ['es-CO', 'Colombia'],
+       ['es-CR', 'Costa Rica'],
+       ['es-EC', 'Ecuador'],
+       ['es-SV', 'El Salvador'],
+       ['es-ES', 'España'],
+       ['es-US', 'Estados Unidos'],
+       ['es-GT', 'Guatemala'],
+       ['es-HN', 'Honduras'],
+       ['es-MX', 'México'],
+       ['es-NI', 'Nicaragua'],
+       ['es-PA', 'Panamá'],
+       ['es-PY', 'Paraguay'],
+       ['es-PE', 'Perú'],
+       ['es-PR', 'Puerto Rico'],
+       ['es-DO', 'República Dominicana'],
+       ['es-UY', 'Uruguay'],
+       ['es-VE', 'Venezuela']
+      ],
+      ['Euskara', ['eu-ES']],
+      ['Français', ['fr-FR']],
+      ['Galego', ['gl-ES']],
+      ['Hrvatski', ['hr_HR']],
+      ['IsiZulu', ['zu-ZA']],
+      ['Íslenska', ['is-IS']],
+      ['Italiano', ['it-IT', 'Italia'],
+       ['it-CH', 'Svizzera']
+      ],
+      ['Magyar', ['hu-HU']],
+      ['Nederlands', ['nl-NL']],
+      ['Norsk bokmål', ['nb-NO']],
+      ['Polski', ['pl-PL']],
+      ['Português', ['pt-BR', 'Brasil'],
+       ['pt-PT', 'Portugal']
+      ],
+      ['Română', ['ro-RO']],
+      ['Slovenčina', ['sk-SK']],
+      ['Suomi', ['fi-FI']],
+      ['Svenska', ['sv-SE']],
+      ['Türkçe', ['tr-TR']],
+      ['български', ['bg-BG']],
+      ['Pусский', ['ru-RU']],
+      ['Српски', ['sr-RS']],
+      ['한국어', ['ko-KR']],
+      ['中文', ['cmn-Hans-CN', '普通话 (中国大陆)'],
+       ['cmn-Hans-HK', '普通话 (香港)'],
+       ['cmn-Hant-TW', '中文 (台灣)'],
+       ['yue-Hant-HK', '粵語 (香港)']
+      ],
+      ['日本語', ['ja-JP']],
+      ['Lingua latīna', ['la']]
+    ];
+  </script>
+  
+  <script>
+    function isCR(e) {
+      var charCode = (e.charCode) ? e.charCode : e.keyCode;
+      return (charCode == 10 || charCode == 13);
+    }
+    
+    function onTextAreaKeyPress(e) {
+      if (isCR(event)) {
+        
+        useTextInput();
+        
+        textInput.blur();
+        
+      }
+      
+      return true;
+    }
+    
+  </script>
+
+  
+  <body onload="onLoad();" onresize="onResize();">
+  
+    <div id="wrapper">
+      <div id="top">
+        <div id="productName" align="center">
+          <div id="topName">
+            <a xonclick="javascript:toggleDemo();" style="cursor:pointer;" href="http://webspeechapi.blogspot.com/2013/04/talkshow-story-illustrator-shows.html"
+            title="TalkShow shows pictures of the things you're talking about" target="_new">
+              TalkShow
+            </a>
+            <div id="subTitle" title="Go to TalkShow's Facebook page">
+              <a href="http://www.facebook.com/TalkshowStoryIllustrator">
+                story illustrator
+              </a>
+            </div>
+          </div>
+          <div id="partners">
+            <a target="_new" title="Flickr Image search" href="http://www.flickr.com/">
+			  <img src="./talkshow/flickr_logo.gif"/>
+            </a>	
+            <br/>	
+			
+            <a target="_new" title="Internet image search" href="http://datamarket.azure.com/dataset/bing/search">
+			Bing Search
+            </a>	
+			<br>
+			
+            <a target="_new" title="Continuous speech recognition over the web (requires Chrome version 25)" href="http://updates.html5rocks.com/2013/01/Voice-Driven-Web-Apps-Introduction-to-the-Web-Speech-API">
+              Web Speech
+            </a>
+           
+
+       
+
+          </div>
+        </div>
+		
+        <div id="results" class="resultsClass" onclick="openTextInput()" style="display:block">
+          <div id="resultsContainer" style="float:right;">
+            <span class="final" id="final_span"></span>
+            <span class="interim" id="interim_span"></span>
+          </div>
+		  
+        </div>
+		
+		<div id="resultsText" class="resultsClass" style="display:none;height:42px">
+          <textarea type="search" id="textInput" style="width:100%;height:100%;outline:gray" onkeypress="onTextAreaKeyPress(event);"></textarea>
+        </div>
+        
+        <div class="mic_button_div">
+          <a id="butt" title="Click and start talking." href="javascript:startButton(event)">
+            <span id="goButtonSpan" id="go">
+              go
+            </span>
+            <img id="micButtonImg" src="./talkshow/mic.gif" />
+          </a>
+        </div>
+		
+		<div class="textAudioButtonDiv" id="textButtonDiv" style="display:none;padding-top:5px;font-size:12pt">
+		  <a href="javascript:useTextInput()">
+            analyze
+          </a>
+		  <br>
+		  <a href="javascript:textInput.value=''">
+            clear
+          </a>
+		</div>
+		
+        <div>
+          <div id="div_language">
+            <select id="select_language" onchange="updateCountry()">
+              <option value="0">
+                Afrikaans
+              </option>
+              <option value="1">
+                Bahasa Indonesia
+              </option>
+              <option value="2">
+                Bahasa Melayu
+              </option>
+              <option value="3">
+                Català
+              </option>
+              <option value="4">
+                Čeština
+              </option>
+              <option value="5">
+                Deutsch
+              </option>
+              <option value="6">
+                English
+              </option>
+              <option value="7">
+                Español
+              </option>
+              <option value="8">
+                Euskara
+              </option>
+              <option value="9">
+                Français
+              </option>
+              <option value="10">
+                Galego
+              </option>
+              <option value="11">
+                Hrvatski
+              </option>
+              <option value="12">
+                IsiZulu
+              </option>
+              <option value="13">
+                Íslenska
+              </option>
+              <option value="14">
+                Italiano
+              </option>
+              <option value="15">
+                Magyar
+              </option>
+              <option value="16">
+                Nederlands
+              </option>
+              <option value="17">
+                Norsk bokmål
+              </option>
+              <option value="18">
+                Polski
+              </option>
+              <option value="19">
+                Português
+              </option>
+              <option value="20">
+                Română
+              </option>
+              <option value="21">
+                Slovenčina
+              </option>
+              <option value="22">
+                Suomi
+              </option>
+              <option value="23">
+                Svenska
+              </option>
+              <option value="24">
+                Türkçe
+              </option>
+              <option value="25">
+                български
+              </option>
+              <option value="26">
+                Pусский
+              </option>
+              <option value="27">
+                Српски
+              </option>
+              <option value="28">
+                한국어
+              </option>
+              <option value="29">
+                中文
+              </option>
+              <option value="30">
+                日本語
+              </option>
+              <option value="31">
+                Lingua latīna
+              </option>
+            </select>
+            &nbsp;&nbsp;
+            <select id="select_dialect" style="visibility: visible;" onchange="bounceLanguage();">
+              <option value="en-AU">
+                Australia
+              </option>
+              <option value="en-CA">
+                Canada
+              </option>
+              <option value="en-IN">
+                India
+              </option>
+              <option value="en-NZ">
+                New Zealand
+              </option>
+              <option value="en-ZA">
+                South Africa
+              </option>
+              <option value="en-GB">
+                United Kingdom
+              </option>
+              <option value="en-US">
+                United States
+              </option>
+            </select>
+          </div>
+          <div id="controls">
+		  
+		    <a id="textAudio" href="javascript:switchTextAudio();" 
+			title="click to use text input">
+              text
+            </a>
+            |
+		  
+		  	<input id="chkBoxSearchNames" type="checkbox" checked=="true" style="margin-left:7px" title="For narrative input by voice or text.  Complete sentences work best.  AlchemyAPI extracts names, but is limited to 8 European languages.">
+			  <a target="_new" title="Named Entity Recognition" href="http://www.alchemyapi.com/api/entity/langs.html">
+			  Alchemy
+			  </a>
+			</input>
+			<input id="chkBoxSearchPhrases" type="checkbox" checked="true" style="margin-left:7px" title="For list style input by voice or text.  Search each chunk separated by pauses in speech or punctuation in text.">
+            list
+			</input>
+			|
+		  
+
+            
+            <input id="chkBoxSafe" type="checkbox" checked="true" title="Avoid objectionable material" style="margin-left:7px">
+			safe
+			</input>
+			
+			<div id="slider"></div>
+
+            
+          </div>
+        </div>
+      </div>
+      <div id="middle">
+        <div id="info">
+          <p id="info_speak_now" style="display: none;">
+            Speak now.
+          </p>
+          <div id="info_no_speech" style="display: none;">
+            No speech was detected. You may need to adjust your
+            <a href="https://support.google.com/chrome/bin/answer.py?hl=en&answer=1407892">
+              microphone settings
+            </a>
+            .
+          </div>
+          <div id="info_no_microphone" style="display: none;" title="No microphone">
+            No microphone was found. Ensure that a microphone is installed and that
+            <a href="https://support.google.com/chrome/bin/answer.py?hl=en&answer=1407892">
+              microphone settings
+            </a>
+            are configured correctly.
+          </div>
+          <div id="info_allow" style="display: none;" title="Permission denied">
+            Click the "Allow" button above to enable your microphone.
+          </div>
+          <div id="info_denied" style="display: none;" title="Permission denied">
+            Permission to use microphone was denied.  To change, go to your
+            <a href="chrome://settings/content">
+              Chrome settings page
+			</a>
+            .			
+          </div>
+          <div id="info_blocked" style="display: none;" title="Permission blocked">
+            Permission to use microphone is blocked. To change, go to your
+            <a href="chrome://settings/content">
+              Chrome settings page
+            </a>
+            .
+          </div>
+		  
+		  
+          <div id="info_upgrade" style="display: none;" title="Web Speech API not supported">
+            The interface was designed for continuous speech recognition.  The Web Speech API is not supported by this browser. You can view the video and text-mode demos here, but to get the real experience, upgrade to
+            <a href="https://www.google.com/intl/en/chrome/browser/beta.html">
+              Chrome version 25 beta
+            </a>
+            or later. 
+		  </div>
+		  
+        </div>
+		
+        <div id="slideShowDiv"  onmouseup="onMouseUp(event, this)">
+          
+		  
+          <div class="absDiv">
+		     <img id="theImage" onload="onImgLoad('theImage', 'theImage2')" onerror="onImgError('theImage', 'theImage2')" />
+          </div>
+		  
+          <div class="absDiv">
+		     <img id="theImage2" onload="onImgLoad('theImage2', 'theImage')" onerror="onImgError('theImage2', 'theImage')"  >
+          </div>
+		  
+		  <div id="demoDiv">
+            
+			  <a href="http://www.youtube.com/watch?v=j0BDSlrP63Q">
+              <div class="demoElement">
+                
+                <div class="demoThumbnailDiv">
+                  <img class="demoThumbnail" src="./talkshow/charlotte.png">
+                </div>
+                
+                
+                <div class="demoTextDiv">
+                  <div class="demoTitle">
+                    Demo video in French
+                  </div>
+                  <div class="demoDescription">
+					  An experiment in "incidental computing", this app demands very little attention from you, thanks to the continuous speech recognition for Chrome, released in Feb 2013. Click the mic button once and talk as long as you like, pausing as needed.  The app eavesdrops on your conversation and tries to find images of interest.  
+					  <p style="margin-top:5px">
+					  The other demos here are text-based and work on the iPhone, iPad, Firefox, and Internet Explorer.
+					  </p>
+                  </div>
+                </div>
+                
+              </div>
+            </a>
+            
+            
+            
+            <a href="./index.html?txt=%20Mount%20Everest,%20K2%20mountain,%20Kangchenjunga,%20Lhotse,%20Makalu,%20Cho%20Oyu,%20Dhaulagiri,%20Manaslu,%20Nanga%20Parbat,%20Annapurna%20&phrases=6&names=0">
+              <div class="demoElement">
+                <div class="demoThumbnailDiv">
+                  <img class="demoThumbnail" src="./talkshow/Makalu.jpg">
+                </div>
+                <div class="demoTextDiv">
+                  <div class="demoTitle">
+                    Mountains
+                  </div>
+                  <div class="demoDescription">
+                    Mount Everest, K2 mountain, Kangchenjunga, Lhotse, Makalu, Cho Oyu, Dhaulagiri, Manaslu, Nanga Parbat, Annapurna
+                  </div>
+                </div>
+              </div>
+            </a>
+            
+            <a href="./index.html?txt=frogs,%20lizards,%20toads,%20snakes,%20salamanders&phrases=6&names=0">
+              <div class="demoElement">
+                <div class="demoThumbnailDiv">
+                  <img class="demoThumbnail" src="./talkshow/frog.jpg">
+                </div>
+                <div class="demoTextDiv">
+                  <div class="demoTitle">
+                    Reptiles and Amphibians
+                  </div>
+                  <div class="demoDescription">
+                    frogs, lizards, toads, snakes, salamanders
+                  </div>
+                </div>
+              </div>
+            </a>
+            
+            <a href="./index.html?txt=Florence,%0ADavid%20di%20Micheangelo,%0ADa%20Vinci,%0ACampanile,%0APiazza%20Della%20Signoria,%0ASanta%20Croce,%0AAnfiteatro%20Romano,%0APalazzo%20Vecchio,%0AMercado%20Centrale,%0ALe%20Cascine%20di%20Firenze,%0AForte%20di%20Belvedere,%0ABargello,%0AGalleria%20Delgi%20Uffizi&phrases=6&names=0">
+              <div class="demoElement">
+                <div class="demoThumbnailDiv">
+                  <img class="demoThumbnail" src="./talkshow/david.jpg">
+                </div>
+                <div class="demoTextDiv">
+                  <div class="demoTitle">
+                    Florence
+                  </div>
+                  <div class="demoDescription">
+                    Florence,
+                    David di Micheangelo,
+                    Da Vinci,
+                    Campanile,
+                    Piazza Della Signoria,
+                    Santa Croce,
+                    Anfiteatro Romano,
+                    Palazzo Vecchio,
+                    Mercado Centrale,
+                    Le Cascine di Firenze,
+                    Forte di Belvedere,
+                    Bargello,
+                    Galleria Delgi Uffizi
+                  </div>
+                </div>
+              </div>
+            </a>
+            
+            
+            <a href="./index.html?txt=Poulet%2520R%25C3%25B4ti%2520aux%2520Herbes%2C%250ASt%2520Jacques%2520Saises%2C%250AGnocchis%2520%25C3%25A0%2520la%2520Truffe%2C%250AOsso%2520Buco%2520d%25E2%2580%2599Agneau%2C%250ALimande%2520en%2520Papillote%2C%250ABlanquette%2520de%2520Lapin%2C%250ACanard%2520de%2520deux%2520Fa%25C3%25A7ons%2C%250ASteak%2520frites&phrases=6&names=0">
+              <div class="demoElement">
+                <div class="demoThumbnailDiv">
+                  <img class="demoThumbnail" src="./talkshow/papillote.jpg">
+                </div>
+                <div class="demoTextDiv">
+                  <div class="demoTitle">
+                    Menu
+                  </div>
+                  <div class="demoDescription">
+                    Poulet Rôti aux Herbes, St Jacques Saises, Gnocchis à la Truffe, Osso Buco d’Agneau, Limande en Papillote, Blanquette de Lapin, Canard de deux Façons
+                  </div>
+                </div>
+              </div>
+            </a>
+            
+            <a href="./index.html?txt=Mustang%25201964%2C%2520Mustang%25201965%2C%2520Mustang%25201966%2C%2520Camaro%25201967%2C%2520Mustang%25201967%2C%2520Camaro%25201968%2C%2520Mustang%25201968%2C%2520Camaro%25201969%2C%2520Mustang%25201969%2C%2520Camaro%25201970%2C%2520Mustang%25201970%2C%2520Camaro%25201971%2C%2520Mustang%25201971%2C%2520Camaro%25201972%2C%2520Mustang%25201972&phrases=6&names=0">
+              <div class="demoElement">
+                <div class="demoThumbnailDiv">
+                  <img class="demoThumbnail" src="./talkshow/camaro.jpg">
+                </div>
+                <div class="demoTextDiv">
+                  <div class="demoTitle">
+                    Mustangs and Camaros
+                  </div>
+                  <div class="demoDescription">
+                    Mustang 1964, Mustang 1965, Mustang 1966, Camaro 1967, Mustang 1967, Camaro 1968, Mustang 1968, Camaro 1969, Mustang 1969, Camaro 1970, Mustang 1970, Camaro 1971, Mustang 1971, Camaro 1972, Mustang 1972
+                  </div>
+                </div>
+              </div>
+            </a>
+  
+            <a href="./index.html?txt=%2520%2520%2520%2520%2520%2520%2520%2520%2520%2520Spiderman%2520by%2520Steve%2520Ditko%2C%2520%250ADr%2520Strange%2520by%2520Steve%2520Ditko%2C%250AHulk%2520by%2520Jack%2520Kirby%2C%250AIron%2520Man%2520in%2520Tales%2520of%2520Suspense%2C%250AThor%2520in%2520Tales%2520to%2520Astonish%2C%250AStrange%2520Tales&phrases=6&names=0">
+              <div class="demoElement">
+                <div class="demoThumbnailDiv">
+                  <img class="demoThumbnail" src="./talkshow/hulk.png">
+                </div>
+                <div class="demoTextDiv">
+                  <div class="demoTitle">
+                    Silver Age Marvels
+                  </div>
+                  <div class="demoDescription">
+Spiderman by Steve Ditko, 
+Dr Strange by Steve Ditko,
+Hulk by Jack Kirby,
+Iron Man in Tales of Suspense,
+Thor in Tales to Astonish,
+Strange Tales
+                  </div>
+                </div>
+              </div>
+            </a>
+			
+			<a href="./index.html?txt=Skrillex%2C%2520Swedish%2520house%2520mafia%2C%2520Calvin%2520harris%2C%2520borgore%2C%2520kaskade%2C%2520avicii%2C%2520major%2520lazer%2C%2520diplo%2C%2520baauer%2C%2520dillon%2520Francis%2C%2520knife%2520party%2C%2520daft%2520punk&phrases=6&names=0">
+              <div class="demoElement">
+                <div class="demoThumbnailDiv">
+                  <img class="demoThumbnail" src="./talkshow/avicii.jpg">
+                </div>
+                <div class="demoTextDiv">
+                  <div class="demoTitle">
+                    djs
+                  </div>
+                  <div class="demoDescription">
+Skrillex, Swedish house mafia, Calvin harris, borgore, kaskade, avicii, major lazer, diplo, baauer, dillon Francis, knife party, daft punk
+                  </div>
+                </div>
+              </div>
+            </a>
+            
+            
+		  </div>
+		  
+		  
+		  
+		  
+		  
+		  
+        </div>
+		
+		
+        
+        <div id="rightMiddle">
+          
+          <div id="slideShowControls">
+            <a class="slideShowControlButton" id="btnGoBack" href="javascript:goBack();">
+              back
+            </a>
+            <a class="slideShowControlButton" id="btnGoPlay" href="javascript:goPlay();">
+              play
+            </a>
+            <a class="slideShowControlButton" id="btnGoForward" href="javascript:goForward();">
+              next
+            </a>
+          </div>
+          
+          
+          <div id="listDiv">
+          </div>
+          <div id="linkDiv">
+		    <a id="btnClear" href="javascript:clear();" title="Erase the transcript and all images">
+              erase all
+            </a>
+			|
+            <a id="linkUrl">
+              link to this page
+            </a>
+          </div>
+		</div>
+		
+        <div class="listElement" id="queryUnderscore_listElement" style="visibility:hidden">
+		  <a class="closebox" href="javascript:deleteQuery('queryEsc')">
+            x
+          </a>
+		  
+          <a href="javascript:openListDiv('queryEsc')">
+            <div class="listName" id="queryUnderscore_listName">
+              query
+            </div>
+            <div class="listBar" id="queryUnderscore_listBar">
+              <span class="countDisplayed" id="queryUnderscore_countDisplayed"></span><span class="countLoaded" id="queryUnderscore_countLoaded"></span>
+            </div>
+          </a>
+          
+          <div class="listSelected" id="queryUnderscore_listSelected" style="display:none">
+            <a id="queryUnderscore_moreQuery" href="javascript:moreQuery('queryEsc')" title="Request up to 34 images">
+              more
+            </a>
+            |
+            <a href="javascript:closeListDiv('queryEsc')">
+              close
+            </a>
+          </div>
+        </div>
+		
+		
+      </div>
+      <div id="bottom">
+        <a id="clickDisplayUrl" href="" target="_new">
+          <span id="statusUrl">
+          </span>
+        </a>
+        
+        <span id="statusTitleQuery">
+          <span id="statusQuery">
+          </span>
+          : 
+          <span id="statusTitle">
+          </span>
+        </span>
+      </div>
+    </div>
+    
+    
+    <script src="./talkshow/chrome.min.js">
+    </script>
+    <script src="./talkshow/speech.js">
+    </script>
+    <script type="text/javascript" src="./talkshow/search.js">
+    </script>
+    <script type="text/javascript" src="./talkshow/namedEntities.js">
+    </script>
+  </body>
+  
+</html>

@@ -1,0 +1,1 @@
+It's very hard to construct an image that represents a state of the world as described in natural language.  My app tackles an easy problem:  find existing images that may be relevant.  

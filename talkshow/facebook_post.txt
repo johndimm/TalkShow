@@ -1,0 +1,68 @@
+TalkShow shows pictures from the internet of the things you talk about.
+
+User's Guide
+
+1. Speak slowly and clearly
+2. Pause between names
+
+The program doesn't have any commands. It constantly analyzes your speech, listening for any mention of a person or place.
+
+Start by saying some famous names: TV shows, bands, cities, monuments, celebrities, historical figures, brands, products. Anything with an image that might be found on the internet.
+
+If it doesn't recognize a name, try using the name in a complete sentence.
+
+Try telling a story that mentions some well-known people, places, or things. Remember to pause each time you mention a name.
+
+Talk about your last vacation or the time you met a celebrity.
+
+Turn it on a let it eavesdrop while you have a conversation.
+
+
+What it does
+
+TalkShow transcribes your speech, mines the text for proper names, does an internet image search, and displays search results as a slideshow. 
+
+When you pause for a second, the transcribed words since the last pause are examined. If there are capitalized words in this chunk, a search for 20 hits is initiated for each name. If there are none, the entire phrase is searched for only three hits.
+
+Between pauses, the program repeatedly checks the words that have arrived since the last pause, looking for new names. If it finds one, it interrupts the slideshow to display the new image as soon as possible.
+
+The slideshow cycles through the results for all queries, looking for images that have not been displayed yet, paying attention to the rank of an image in the search results list. Top hits for each query are displayed first.
+
+
+How it works
+
+This is instant image search using continuous narrative speech transcription and named entity recognition.
+
+Speech:
+
+The new continuous speech recognition API in Google Chrome Beta:
+
+Voice Driven Web Apps: Introduction to the Web Speech API - HTML5Rocks Updates
+http://updates.html5rocks.com/2013/01/Voice-Driven-Web-Apps-Introduction-to-the-Web-Speech-API
+
+
+Named Entity Recognition:
+
+Alchemy API
+http://www.alchemyapi.com/
+
+The TalkShow javascript code decides what to search, based on the results of Alchemy's Named Entity Recognition.  Alchemy is run only on completed phrases.  The simpler approach of looking for sequences of capitalized words in the speech transcript is used for interim results.  Unfortunately, capitalization of names is done by the Speech Recognition software only in English at the moment.  
+
+Alchemy works for English, French, German, Italian, Russian, Spanish, and Swedish.  For other languages, we look up every pause-delimited chunk.  You control the program by your placement of pauses.
+
+
+Image Search:
+
+Yahoo BOSS
+http://developer.yahoo.com/boss/search/
+
+
+Slide Show
+
+Homegrown.    
+
+
+About the author
+
+John Dimm
+http://www.linkedin.com/in/johndimm/

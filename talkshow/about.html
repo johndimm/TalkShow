@@ -1,0 +1,100 @@
+<html>
+<head>
+<title>
+TalkShow - about
+</title>
+</head>
+<body>
+<div style="position:absolute;left:0;right:0;" align="center">
+<div style="width:700px;margin=auto;display:block" align="left">
+<pre>
+
+TalkShow
+
+shows pictures from the internet
+of the things you talk about
+
+instant image search 
+using continous narrative speech transcription
+and named entity recognition
+
+
+User's Guide
+
+1. Speak slowly and clearly
+2. Pause between names
+
+The program doesn't have any commands.  It constantly analyzes your speech,
+looking for proper names.  
+
+Start by saying some famous names:  TV shows, bands, cities, monuments, 
+celebrities, historical figures, brands, products.  Anything with an image that
+might be found on the internet.
+
+If it doesn't recognize a name, try using the name in a complete sentence.
+
+Try telling a story that mentions some well-known people, places, or things.  
+Remember to pause each time you mention a name.
+Talk about your last vacation or the time you met a celebrity.
+
+Turn it on a let it eavesdrop while you have a conversation.
+
+
+What it does
+
+TalkShow transcribes your speech, mines the text for proper names, 
+does an internet image search, and displays search results as a slideshow.  
+
+When you pause for a second, the transcribed words since the last pause are examined.  
+If there are capitalized words in this chunk, a search for 20 hits is initiated 
+for each name.  If there are none, the  entire phrase is searched for only three hits.
+
+Between pauses, the program repeatedly checks the words that have arrived since the last 
+pause, looking for new names. If it finds one, it interrups to the slideshow to 
+display the new image as soon as possible.
+
+The slideshow cycles through the results for all queries, looking for images 
+that have not been displayed yet, paying attention to the rank of an image in 
+the search results list.  Top hits for each query are displayed first.
+
+
+How it works
+
+
+Speech:
+
+The new continous speech recognition API in Google Chrome Beta:
+<a href="http://updates.html5rocks.com/2013/01/Voice-Driven-Web-Apps-Introduction-to-the-Web-Speech-API">Voice Driven Web Apps: Introduction to the Web Speech API - HTML5Rocks Updates
+</a>
+
+Named Entity Recognition:
+
+Homegrown, on the cheap.  For this version, we use phrase shape to isolate sequences of 
+capitalized words that may be names.  This works only in English at the moment.
+For other languages, the program searches for all the words you speak.  It does 
+a new search whenever you pause.
+
+
+Image Search:
+
+<a href="http://developer.yahoo.com/boss/search/">Yahoo BOSS</a>
+
+
+Slide Show:
+
+Homegrown.
+
+
+About the author
+
+<a href="http://www.linkedin.com/in/johndimm/">John Dimm</a>
+
+Version 0.1 created on January 19, 2013
+</pre>
+</div>
+
+</div>
+</body>
+</html>
+
+
