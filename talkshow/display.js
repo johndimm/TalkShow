@@ -155,6 +155,8 @@ function displayImage(bestImageIdx) {
   statusTitle.innerHTML = g_searchResults[bestImageIdx].Title;
   statusQuery.innerHTML = g_searchResults[bestImageIdx].query;
 
+  $("#subtitle").html(g_searchResults[bestImageIdx].query);
+
   clickDisplayUrl.href = statusUrl.innerHTML;
 //  theImageAnchor.href = statusUrl.innerHTML;
 //  theImageAnchor2.href = theImageAnchor.href;
@@ -257,7 +259,7 @@ function onLoad() {
 	  min: 1,
       max: 60,
       value: 4,
-      change: function(event, ui) { if (playing) startSlideShow() },
+      change: function(event, ui) { if (g_playing) startSlideShow() },
 	  slide: function(event, ui) {
             $(".ui-slider-handle").text(ui.value + 's');
 			g_slideShowDelay = ui.value * 1000;

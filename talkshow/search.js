@@ -2,8 +2,8 @@
 var g_searchResults = [];
 var g_queries = new Object;
 var g_imgUrls = new Object;
-var g_nSearchPhrases = 6;
-var g_nSearchNames = 18;
+var g_nSearchPhrases = 10;
+var g_nSearchNames = 10;
 
 var g_blacklist = [
   "www.animalpictures.pro"
@@ -23,9 +23,10 @@ function searchInternetAgain(query, nRequestedHits) {
   var fifth = parseInt(nRequestedHits/5);
   var rest = nRequestedHits - fifth;
   console.log ("nRequestedHits=" + nRequestedHits + "  fifth=" + fifth);
+  return getFlickr(query, nRequestedHits);
 //  getBOSS(query, half); 
- getFlickr(query, fifth);
- return getBing(query, rest);
+// return getFlickr(query, fifth);
+ // return getBing(query, rest);
 }
 
 function searchInternet(query, nRequestedHits) {
@@ -145,7 +146,7 @@ function getFlickr(query, nRequestedHits) {
   var queryEncoded = encodeURIComponent(query).replace("'", "%20");
   var flickrApiKey = "8e178f18275aa59d60ee059fe7648775";
   
-  requestStr = "https://secure.flickr.com/services/rest/?method=flickr.photos.search&extras=url_l%2C+url_m&api_key={api_key}&text={query}&format=json&per_page={nRequestedHits}&sort=relevance&content_type=1&jsoncallback=?";
+  requestStr = "https://secure.flickr.com/services/rest/?method=flickr.photos.search&extras=url_l%2C+url_m&api_key={api_key}&text={query}&format=json&per_page={nRequestedHits}&sort=interestingness-desc&content_type=1&jsoncallback=?";
   requestStr = requestStr
     .replace ("{query}", queryEncoded)
 	.replace("{nRequestedHits}", nRequestedHits)
@@ -221,15 +222,33 @@ function getBing(query, nRequestedHits) {
   var priority = 0;
 
   var quote = "%27";
+  
+  var adult = (chkBoxSafe.checked) ? "'Strict'" : "'Off'";
 
   //Build up the URL for the request
   var queryEncoded = encodeURIComponent(query);
-  var requestStr = "https://api.datamarket.azure.com/Data.ashx/Bing/Search/v1/Image?Query=" + quote + queryEncoded + quote + "&$top=" + nRequestedHits + "&$format=json";
+  
+  var data = { 
+    'Query' : "'" + query + "'",
+    '$top' : nRequestedHits,
+    '$format':'json',
+    'Adult': adult
+ ,   'ImageFilters': "'" + 'Size:Large' + "'"
+  }
+    
+  var url = "https://api.datamarket.azure.com/Data.ashx/Bing/Search/v1/Image"
+  var requestStr = url + "?Query=" + quote + queryEncoded + quote
+    + "&$top=" + nRequestedHits  
+//    + "&Image.Count=" + nRequestedHits 
+    + "&$format=json"
+ //   + "&Adult=Off";
   console.log(requestStr);
   
   //Return the promise from making an XMLHttpRequest to the server
   $.ajax({
-    url: requestStr,
+    url: url,
+    data: data,
+//    url: requestStr,
     beforeSend: setHeader,
     context: this,
     type: 'GET',

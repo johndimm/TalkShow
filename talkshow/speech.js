@@ -167,7 +167,7 @@ function onResult(event) {
   }
 
   // When the user pauses for half a second, process the entire phrase.  
-  g_speechTimer = setTimeout(processCompletePhrase, 500);
+  g_speechTimer = setTimeout(processCompletePhrase, 1);
 }
 
 

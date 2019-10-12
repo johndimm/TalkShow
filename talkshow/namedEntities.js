@@ -13,7 +13,7 @@ function checkPhraseShape(re, phraseShape, words) {
   // Use phrase shape and a regex to look for a pattern
   // and extract the corresponding words.
   var nFound = 0;
-  var match;
+  var match = null;
 
   while (match = re.exec(phraseShape)) {
     if (match.length < 2) continue;
@@ -84,19 +84,21 @@ function findNamedEntities(inputText, bFinishedPhrase) {
   }
 
   var nFound = 0;
-  if (bFinishedPhrase) {
-
-    alchemyEntities(inputText, phraseShape, words);
-  } else {
+//  if (bFinishedPhrase) {
+//
+//    alchemyEntities(inputText, phraseShape, words);
+//  } else {
     /*
      - xX+x -- must be a name
 	 - xX$ -- do nothing, the next word might come in the next buffer
 	 - XX+ -- good, at least two, anywhere in the chunk.  take the longest string of caps.
 	 - Xxx -- might be a name.  Don't interrupt, we will catch it on the next timeout
      */
-    nFound += checkPhraseShape(/x(X+)x/g, phraseShape, words);
-    nFound += checkPhraseShape(/(XX+)/g, phraseShape, words);
-  }
+ //   nFound += checkPhraseShape(/x(X+)x/g, phraseShape, words);
+    nFound += checkPhraseShape(/(X+)/g, phraseShape, words);
+    nFound += checkPhraseShape(/(XxX)/g, phraseShape, words);
+ //   nFound += checkPhraseShape(/(X)$/, phraseShape, words);
+//  }
 
   return nFound;
 }
